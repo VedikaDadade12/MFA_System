@@ -56,14 +56,12 @@
       if (matchedUser) {
         // Save current session
         localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
-        alert("✅ Login successful!");
         setTimeout(() => {
           window.location.href = "success.html";
         }, 1000);
       } else {
-        alert("❌ Invalid credentials.");
         setTimeout(() => {
-          window.location.href = "error.html";
+          window.location.href = "login_error.html";
         }, 1000);
       }
     });
