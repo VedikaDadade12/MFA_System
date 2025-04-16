@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="dashboard">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-shield-alt"></i> SecureAuth</h2>
+        </div>
+        <ul>
+            <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="update_profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="change_password.html"><i class="fas fa-lock"></i> Security</a></li>
+            <li><a href="index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header>
+            <h1>Welcome, <span id="username">User</span>!</h1>
+            <p>Your account is secured with multi-factor authentication.</p>
+        </header>
+
+        <section class="dashboard-grid">
+            <!-- Profile Information -->
+            <div class="card profile-card">
+                <h3><i class="fas fa-user"></i> Profile Overview</h3>
+                <p><strong>Name:</strong> <span id="username-display">User</span></p>
+                <p><strong>Last Login:</strong> <span id="last-login">Fetching...</span></p>
+            </div>
+
+            <!-- Security Status -->
+            <div class="card security-card">
+                <h3><i class="fas fa-shield-alt"></i> Security Status</h3>
+                <p id="security-status">Checking...</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card actions-card">
+                <h3><i class="fas fa-cogs"></i> Quick Actions</h3>
+                <button onclick="location.href='update_profile.html'"><i class="fas fa-user-edit"></i> Update Profile</button>
+                <button onclick="location.href='change_password.html'"><i class="fas fa-lock"></i> Change Password</button>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript for Dynamic Data -->
+   <!-- Somewhere inside the body -->
+<h2>Welcome, <span id="welcomeUser"></span> 👋</h2>
+<button onclick="logout()" class="btn-logout">Logout</button>
+
+<script>
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!user) {
+    window.location.href = "index.html"; // Not logged in
+  } else {
+    document.getElementById("welcomeUser").textContent = user.username;
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    alert("🚪 Logged out successfully!");
+    window.location.href = "index.html";
+  }
+</script>
+
+</body>
+</html>

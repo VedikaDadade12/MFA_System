@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - MFA System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <h2>📝 Register</h2>
+    <form id="registerForm">
+      <label for="newUsername">Username:</label>
+      <input type="text" id="newUsername" placeholder="Choose a username" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
+
+      <label for="newPassword">Password:</label>
+      <div class="password-container">
+        <input type="password" id="newPassword" placeholder="Create a password" required />
+        <button type="button" class="toggle-password" id="toggleNewPassword"><i class="fa-solid fa-eye"></i></button>
+      </div>
+
+      <label for="confirmPassword">Confirm Password:</label>
+      <div class="password-container">
+        <input type="password" id="confirmPassword" placeholder="Confirm your password" required />
+        <button type="button" class="toggle-password" id="toggleConfirmPassword"><i class="fa-solid fa-eye"></i></button>
+      </div>
+
+      <button type="submit" class="btn-login">Register</button>
+    </form>
+
+    <p class="signup-text">Already have an account? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script>
+    function togglePasswordVisibility(toggleId, inputId) {
+      document.getElementById(toggleId).addEventListener("click", function () {
+        const input = document.getElementById(inputId);
+        const icon = this.querySelector("i");
+  
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+      });
+    }
+  
+    togglePasswordVisibility("toggleNewPassword", "newPassword");
+    togglePasswordVisibility("toggleConfirmPassword", "confirmPassword");
+  
+    document.getElementById("registerForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+  
+      const username = document.getElementById("newUsername").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("newPassword").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+  
+      if (password !== confirmPassword) {
+        alert("❌ Passwords do not match!");
+        return;
+      }
+  
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+  
+      // Check for duplicate email or username
+      const duplicate = users.find(user => user.email === email || user.username === username);
+      if (duplicate) {
+        alert("⚠️ Username or email already exists!");
+        return;
+      }
+  
+      users.push({ username, email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+  
+      alert("✅ Registered successfully!");
+      window.location.href = "login.html";
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Update Profile</h2>
+        <form id="profileForm">
+            <label>Full Name:</label>
+            <input type="text" id="fullName" required>
+
+            <label>Email:</label>
+            <input type="email" id="email" required>
+
+            <button type="submit">Save Changes</button>
+        </form>
+        <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+    </div>
+
+    <script>
+        // Load existing profile data
+        document.getElementById("fullName").value = localStorage.getItem("username") || "";
+        document.getElementById("email").value = localStorage.getItem("email") || "";
+
+        document.getElementById("profileForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let fullName = document.getElementById("fullName").value;
+            let email = document.getElementById("email").value;
+
+            localStorage.setItem("username", fullName);
+            localStorage.setItem("email", email);
+
+            alert("Profile updated successfully!");
+            window.location.href = "dashboard.html";
+        });
+    </script>
+</body>
+</html>

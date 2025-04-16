@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resend OTP - Secure Auth</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="otp-container">
+        <h2>🔄 Resend OTP</h2>
+        <p>Didn't receive your OTP? Click the button below to request a new one.</p>
+
+        <button id="resendOtp" class="resend-btn">🔁 Resend OTP</button>
+
+        <p class="note">Make sure to check your spam folder if you don't receive the OTP.</p>
+    </div>
+
+    <script>
+        document.getElementById("resendOtp").addEventListener("click", function() {
+            fetch("/send_otp")
+                .then(response => response.json())
+                .then(data => alert("✅ A new OTP has been sent to your email!"))
+                .catch(error => alert("❌ Error sending OTP. Please try again."));
+        });
+    </script>
+</body>
+</html>

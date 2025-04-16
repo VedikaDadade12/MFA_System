@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email OTP Verification</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Email OTP Verification</h2>
+        <form id="otpForm">
+            <input type="email" id="emailInput" placeholder="Enter your email" required>
+            <button type="button" id="requestOtpBtn">Request OTP</button>
+            <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="4" required>
+            <button type="submit">Verify OTP</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        document.getElementById("requestOtpBtn").addEventListener("click", function() {
+            let email = document.getElementById("emailInput").value.trim();
+            let message = document.getElementById("message");
+
+            if (!email) {
+                message.innerHTML = "⚠️ Please enter a valid email address.";
+                message.className = "error";
+                return;
+            }
+
+            fetch("http://127.0.0.1:5000/generate_email_otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                message.innerHTML = "📧 OTP sent to your email!";
+                message.className = "success";
+            })
+            .catch(error => {
+                console.error("Error sending OTP:", error);
+                message.innerHTML = "❌ Failed to send OTP. Try again.";
+                message.className = "error";
+            });
+        });
+
+        document.getElementById("otpForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let email = document.getElementById("emailInput").value.trim();
+            let enteredOTP = document.getElementById("otpInput").value.trim();
+            let message = document.getElementById("message");
+
+            if (!email || enteredOTP.length !== 4 || isNaN(enteredOTP)) {
+                message.innerHTML = "⚠️ Please enter a valid email and 4-digit OTP.";
+                message.className = "error";
+                return;
+            }
+
+            fetch("http://127.0.0.1:5000/verify_email_otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email, otp: enteredOTP })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    message.innerHTML = "✅ OTP Verified! Redirecting...";
+                    message.className = "success";
+                    setTimeout(() => {
+                        window.location.href = "success.html"; // Redirect after verification
+                    }, 1500);
+                } else {
+                    message.innerHTML = "";
+                    message.className = "error";
+                    setTimeout(() => {
+                        window.location.href = "error.html"; // Redirect after verification
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                console.error("Error verifying OTP:", error);
+                message.innerHTML = "❌ OTP verification failed.";
+                message.className = "error";
+                setTimeout(() => {
+                    window.location.href = "help.html"; // Redirect after verification
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
