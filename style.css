@@ -751,6 +751,14 @@ body.register-page {
     font-size: 14px;
   }
   
+  .developer-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
 
 /* Responsive */
 @media (max-width: 768px) {
